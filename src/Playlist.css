@@ -1,0 +1,14 @@
+.playlist {
+	display: inline-block;
+	width: 33%;
+	text-align: center;
+}
+
+.playlist__list {
+	margin: 0;
+	padding: 0;
+}
+
+.playlist__song {
+	list-style: none;
+}

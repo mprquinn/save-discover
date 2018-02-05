@@ -5,7 +5,7 @@ class Aggregate extends Component {
 	render() {
 		return (
 			<div className="aggregate">
-				<h2>Text Number</h2>
+				<h2>Text {this.props.playlists && this.props.playlists.length}</h2>
 			</div>
 		)
 	}

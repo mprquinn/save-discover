@@ -35,16 +35,18 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    this.setState({
-      serverData: fakeServerData
-    });
+    window.setTimeout(_ => {
+      this.setState({
+        serverData: fakeServerData
+      });
+    }, 2000);
   }
   render() {
     return (
       <div className="App">
         <Title username={this.state.serverData.user && this.state.serverData.user.name} />
-        <Aggregate playlists={this.state.serverData && this.state.serverData.playlists} />
-        <Aggregate playlists={this.state.serverData && this.state.serverData.playlists} />
+        <Aggregate playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
+        <Aggregate playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
         <Filter />
         <Playlist />
         <Playlist />

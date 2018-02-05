@@ -39,18 +39,22 @@ class App extends Component {
       this.setState({
         serverData: fakeServerData
       });
-    }, 2000);
+    }, 1000);
   }
   render() {
     return (
       <div className="App">
-        <Title username={this.state.serverData.user && this.state.serverData.user.name} />
-        <Aggregate playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
-        <Aggregate playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
-        <Filter />
-        <Playlist />
-        <Playlist />
-        <Playlist />
+        {this.state.serverData.user &&
+          <div>{/* Love you, React */}
+            <Title username={this.state.serverData.user && this.state.serverData.user.name} />
+            <Aggregate playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
+            <Aggregate playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
+            <Filter />
+            <Playlist />
+            <Playlist />
+            <Playlist />
+          </div>
+        }
       </div>
     );
   }

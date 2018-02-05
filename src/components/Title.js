@@ -5,10 +5,7 @@ class Title extends Component {
   render() {
     return (
       <div className="title">
-        {
-          this.props.username &&
-          <h1>{this.props.username}'s Playlists</h1>
-        }
+         <h1>{this.props.username}'s Playlists</h1>
       </div>
     );
   }

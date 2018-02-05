@@ -46,15 +46,21 @@ class App extends Component {
     super();
 
     this.state = {
-      serverData: {}
+      serverData: {},
+      filterString: ''
     }
   }
   componentDidMount() {
-    window.setTimeout(_ => {
+    setTimeout(_ => {
       this.setState({
         serverData: fakeServerData
       });
     }, 1000);
+    // setTimeout(_ => {
+    //   this.setState({
+    //     filterString: 'Weekly'
+    //   });
+    // }, 2000);
   }
   render() {
     return (
@@ -64,8 +70,13 @@ class App extends Component {
             <Title username={this.state.serverData.user && this.state.serverData.user.name} />
             <PlaylistCounter playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
             <HourCounter playlists={this.state.serverData.user && this.state.serverData.user.playlists} />
-            <Filter />
-            {this.state.serverData.user.playlists.map(playlist =>
+            <Filter onTextChange={(text) => this.setState({filterString: text})}/>
+            {this.state.serverData.user.playlists.filter(playlist => {
+              return playlist.name.toLowerCase().includes(
+                this.state.filterString.toLowerCase()
+              )
+            })
+            .map(playlist =>
               <Playlist key={playlist.name} playlist={playlist}/>
             )}
             {/* <Playlist />

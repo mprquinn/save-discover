@@ -15,13 +15,17 @@ class HourCounter extends Component {
         totalDuration = allSongs.reduce((sum, song) => {
             return sum + song.duration;
         }, 0);
-        return totalDuration;
+        return Math.round(totalDuration/60/60);
     }
 	render() {
 		return (
 			<div className="hour-counter">
                 {this.props.playlists && 
-                    <h2>{Math.round(this.calculateHours(this.props.playlists) / 60 / 60)} hours</h2> 
+                    <h2>{Math.round(this.calculateHours(this.props.playlists))} hour
+                    {
+                        Math.round(this.calculateHours(this.props.playlists)) > 1 ? 's':''
+                    } 
+                    </h2> 
                 }
 			</div>
 		)

@@ -5,11 +5,17 @@ class Playlist extends Component {
   render() {
     return (
       <div className="playlist">
-      	<img src="" alt=""/>
-      	<h3 className="playlist__name">Playlist Name</h3>
-      	<ul className="playlist__list">
-      		<li className="playlist__song">Song Name</li>
-      	</ul>
+        {this.props.playlist &&
+          <div>
+            <img src="" alt=""/>
+            <h3 className="playlist__name">{this.props.playlist.name}</h3>
+            <ul>
+              {this.props.playlist.songs.map(song => 
+                <li key={song.name}className="playlist__item">{song.name}</li>
+              )}
+            </ul>
+          </div>
+        }
       </div>
     );
   }

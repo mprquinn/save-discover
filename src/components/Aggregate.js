@@ -5,7 +5,7 @@ class Aggregate extends Component {
 	render() {
 		return (
 			<div className="aggregate">
-				<h2>Aggregate</h2>
+				<h2>Text Number</h2>
 			</div>
 		)
 	}

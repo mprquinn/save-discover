@@ -3,6 +3,7 @@ import Title from "./components/Title";
 import Playlist from "./components/Playlist";
 import "./App.css";
 import "./Create.css";
+import "./Result.css"
 import queryString from "query-string";
 
 class App extends Component {
@@ -78,8 +79,8 @@ class App extends Component {
         );
         let playlistsToSave = noNullPlaylists.filter(playlist => {
           if (
-            playlist.name.toLowerCase().includes("discover weekly") ||
-            playlist.name.toLowerCase().includes("release radar")
+            (playlist.name.toLowerCase().includes("discover weekly") && !playlist.name.toLowerCase().includes('saved')) ||
+            (playlist.name.toLowerCase().includes("release radar") && !playlist.name.toLowerCase().includes('saved'))
           ) {
             return true;
           }
@@ -195,9 +196,13 @@ class App extends Component {
               username={this.state.user && this.state.user.name}
               profile_picture={this.state.user.profile_picture}
             />
-            {this.state.saved ? (
+            {this.state.saved || true ? (
              <div className="result">
-                <h1>SAVED</h1>
+                <h2 className="result__title">Save Complete!</h2>
+                <p className="result__text">
+                  Your playlist(s) have been generated and saved to your account.
+                  They are saved in the following format:<br /> <strong>SAVED Discover Weekly (or Release Radar) on $todays_date</strong>
+                </p>
              </div> 
             ):(
             <div>

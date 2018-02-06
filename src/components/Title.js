@@ -5,7 +5,7 @@ class Title extends Component {
   render() {
     return (
       <div className="title">
-         <h1 className="title__name">{this.props.username}'s Playlists</h1>
+         <h1 className="title__name">Your Playlists</h1>
          <img className="title__image" src={this.props.profile_picture} alt={this.props.username}/ >
       </div>
     );

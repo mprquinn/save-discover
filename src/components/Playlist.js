@@ -9,11 +9,6 @@ class Playlist extends Component {
           <div>
             <h3 className="playlist__name">{this.props.playlist.name}</h3>
             <img src={this.props.image} className="playlist__image" alt={this.props.playlist.name} />
-            <ul className="playlist__list">
-              {this.props.playlist.songs.slice(0,3).map(song => 
-                <li key={song.name}className="playlist__item">{song.name}</li>
-              )}
-            </ul>
           </div>
         }
       </div>

@@ -5,6 +5,7 @@ import HourCounter from './components/HourCounter';
 import Filter from './components/Filter';
 import Playlist from './components/Playlist';
 import './App.css';
+import queryString from 'query-string';
 
 // Dummy data for now
 let fakeServerData = {
@@ -50,13 +51,12 @@ class App extends Component {
       filterString: ''
     }
   }
+  extractToken() {
+    let query = queryString.parse(window.location.search);
+    console.log(query);
+  }
   componentDidMount() {
-    
-    // setTimeout(_ => {
-    //   this.setState({
-    //     filterString: 'Weekly'
-    //   });
-    // }, 2000);
+    this.extractToken();
   }
   render() {
     let playlistsToRender = this.state.serverData.user ? this.state.serverData.user.playlists.filter(playlist => 
@@ -81,8 +81,8 @@ class App extends Component {
                 <Playlist key={playlist.name} playlist={playlist} />
               )}
 
-          </div> : <div class="log-in-wrapper">
-            <button onClick={() => window.location = 'http:// localhost:8888/login'} class="button">Click Here to Sign In</button>
+          </div> : <div className="log-in-wrapper">
+            <button onClick={() => window.location = 'http:// localhost:8888/login'} className="button">Click Here to Sign In</button>
           </div>
         }
       </div>

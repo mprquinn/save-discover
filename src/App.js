@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import Title from "./components/Title";
-import PlaylistCounter from "./components/PlaylistCounter";
-import HourCounter from "./components/HourCounter";
-import Filter from "./components/Filter";
 import Playlist from "./components/Playlist";
 import "./App.css";
 import queryString from "query-string";
@@ -99,6 +96,31 @@ class App extends Component {
             <div className="playlists">
               {this.state.playlists.map(playlist => (
                 <Playlist
+                  onSelect={(name, action) => {
+                    const selected = [...this.state.selected];
+  
+                    if (action === 'select') {
+                      selected.push(name);
+                      this.setState({
+                        selected
+                      });
+                    } else if (action === 'deselect') {
+                      let newSelected = selected.filter(item => {
+                        if (item !== name) {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      });
+                      this.setState({
+                        selected: newSelected
+                      })
+                    }
+                    // Filter by name
+                    // let selected = this.state.playlists.filter(playlist => playlist.name === name);
+                    
+                    
+                  }}
                   key={playlist.name}
                   playlist={playlist}
                   image={playlist.images[0].url}

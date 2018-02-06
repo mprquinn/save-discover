@@ -2,18 +2,33 @@ import React, { Component } from 'react';
 import '../Playlist.css';
 
 class Playlist extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      selected: false
+    }
+  }
   render() {
     return (
-      <div className="playlist">
+      <div className={this.state.selected ? 'playlist playlist--selected' : 'playlist'} onClick={(e) => {
+          this.setState({
+            selected: !this.state.selected
+          });
+          
+          setTimeout(() => {
+            const playlistName = this.props.playlist.name;
+            if (this.state.selected) {
+              this.props.onSelect(playlistName, 'select');
+            } else {
+              this.props.onSelect(playlistName, 'deselect');
+            }
+          },100);
+        }}>
         {this.props.playlist &&
           <div>
-            <img src="" alt=""/>
             <h3 className="playlist__name">{this.props.playlist.name}</h3>
-            <ul>
-              {this.props.playlist.songs.map(song => 
-                <li key={song.name}className="playlist__item">{song.name}</li>
-              )}
-            </ul>
+            <img src={this.props.image} className="playlist__image" alt={this.props.playlist.name} />
           </div>
         }
       </div>

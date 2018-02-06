@@ -1,3 +1,21 @@
 .title {
 	text-align: center;
 }
+
+.title__image-wrap {
+	position: relative;
+	width: 250px;
+	height: 250px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: 0 auto;
+}
+
+.title__image {
+	/* border-radius: 5%; */
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+}

@@ -97,15 +97,17 @@ class App extends Component {
       });
       console.log(toBuild[0]);
       const tracks = toBuild[0].tracks;
+      const oldId = toBuild[0].id;
+      const date = new Date;
       // Manually create the json here since the spotify one has the wrong user info
       let newPlaylist = {
         collaborative: false,
-        name: 'Test Test Hello',
+        name: `SAVED ${currentPlaylist} on ${date.getMonth()+1}/${date.getDate()+1}/${date.getFullYear()}`,
         public: false,
         description: 'Auto generated playlist'
       };
 
-      console.log(newPlaylist);
+      console.log(tracks);
       fetch(`${slug}users/${this.state.user.uid}/playlists`, {
         method: 'POST',
         body: JSON.stringify(newPlaylist),
@@ -116,8 +118,34 @@ class App extends Component {
       })
       .then(response => response.json())
       .catch(error => console.log('Error:', error))
-      .then(response => console.log('Success', response));
+      .then(response => {
+        console.log('Success', response);
+        console.log('oldId', oldId);
+        // Fill tracks here
+        this.fillTracks(this.state.user.uid, oldId, response.id, tracks);
+      });
     }
+  }
+  fillTracks(uid, oldId, newPlaylistId, tracks) {
+    let query = queryString.parse(window.location.search);
+    const accessToken = query.access_token;
+    const slug = "https://api.spotify.com/v1/";
+    
+    const url = `${slug}users/spotify/playlists/${oldId}/tracks`;
+
+    // You have to get tracks first
+    fetch(url, {
+      method: 'GET',
+      headers: new Headers ({
+        Authorization: `Bearer ${accessToken}`
+      })
+    })
+    .then(response => response.json())
+    .catch(error => console.log('Error:', error))
+    .then(response => {
+      console.log('Success 2', response);
+      // Then add them
+    });
   }
   componentDidMount() {
     this.fetchData();

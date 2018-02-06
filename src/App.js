@@ -27,7 +27,7 @@ class App extends Component {
   fetchData() {
     let query = queryString.parse(window.location.search);
     const parsed = query.access_token;
-
+    if (!parsed) {return;}
     fetch("https://api.spotify.com/v1/me", {
       headers: {
         Authorization: `Bearer ${parsed}`
@@ -115,7 +115,13 @@ class App extends Component {
         ) : (
           <div className="log-in-wrapper">
             <button
-              onClick={() => (window.location = "http://localhost:8888/login")}
+              onClick={() =>{
+                if (window.location.href.includes('localhost')) {
+                  window.location = `http://localhost:8888/login`
+                } else {
+                  window.location = `https://save-discover-backend.herokuapp.com/login`;
+                }
+              }}
               className="button"
             >
               Click Here to Sign In

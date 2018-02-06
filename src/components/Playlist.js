@@ -7,7 +7,6 @@ class Playlist extends Component {
       <div className="playlist">
         {this.props.playlist &&
           <div>
-            <img src="" alt=""/>
             <h3 className="playlist__name">{this.props.playlist.name}</h3>
             <img src={this.props.image} className="playlist__image" />
             <ul>

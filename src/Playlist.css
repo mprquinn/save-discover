@@ -3,7 +3,9 @@
 	width: 100%;
 	text-align: center;
 	margin: 5px;
-	padding: 5px;
+	padding: 0 20px 20px;
+	border: 1px solid #efefef;
+	border-radius: 5px;
 	box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
 }
 
@@ -12,22 +14,30 @@
 	padding: 0;
 }
 
+.playlist__name {
+	margin: 1em 0;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: #1d1d1d;
+}
+
 .playlist__song {
 	list-style: none;
 }
 
 .playlist__image {
 	width: 100%;
+	border: 5px solid #1d1d1d;
 }
 
 @media screen and (min-width: 768px) {
 	.playlist {
-		width: calc(50% - 20px);
+		width: calc(50% - 52px);
 	}
 }
 
 @media screen and (min-width: 1200px) {
 	.playlist {
-		width: calc(33% - 20px);
+		width: calc(33% - 52px);
 	}
 }

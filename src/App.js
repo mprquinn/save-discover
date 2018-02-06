@@ -37,7 +37,7 @@ class App extends Component {
     .then(response => {
         return response.json();
     }).then(data => {
-      if (data.id != undefined) {
+      if (data.id !== undefined) {
         this.setState({
           loggedIn: true,
           user: {
@@ -57,10 +57,33 @@ class App extends Component {
     .then(this.handleErrors)
     .then(response => {
       return response.json();
-    }).then(data => {
-      const playlists = data.items;
-      console.log(data.items);
-      if (data.items != undefined) {
+    })
+    .then(playlistData => {
+      let playlists = playlistData.items.filter(item => {
+        if (!item.tracks.href.split('/users/')[1].includes('spotify')) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      let trackDataPromises = playlists.map(playlist => {
+        let responsePromise = fetch(playlist.tracks.href, {
+          headers: { Authorization: `Bearer ${parsed}` }
+        })
+        let trackDataPromise = responsePromise.then(response => response.json());
+        return trackDataPromise;
+      });
+      let allTrackDataPromises = Promise.all(trackDataPromises);
+      let playlistsPromise = allTrackDataPromises.then(tracksData => {
+        tracksData.forEach((trackData, i) => {
+          playlists[i].tracks = trackData.items.map(item => item.track);
+        });
+        return playlists;
+      });
+      return playlistsPromise;
+    })
+    .then(playlists => {
+      if (playlists !== undefined) {
         this.setState({
           playlists: playlists.filter((playlist) => {
             if (playlist.name !== null) {
@@ -69,7 +92,14 @@ class App extends Component {
               return false;
             }
           }).map((item) => {
-            return {name: item.name, songs: [], image: item.images[0].url}
+            return {
+              name: item.name, 
+              songs: item.tracks.map(trackData => ({
+                name: trackData.name,
+                duration: trackData.duration_ms / 1000
+              })),
+              image: item.images[0].url
+            }
           })
         });
       }

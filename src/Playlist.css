@@ -11,7 +11,8 @@
 
 .playlist__list {
 	margin: 0;
-	padding: 0;
+	padding: 0 0 0 20px;
+	text-align: left;
 }
 
 .playlist__name {
@@ -21,8 +22,8 @@
 	color: #1d1d1d;
 }
 
-.playlist__song {
-	list-style: none;
+.playlist__item {
+	text-align: left;
 }
 
 .playlist__image {

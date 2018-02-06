@@ -196,7 +196,7 @@ class App extends Component {
               username={this.state.user && this.state.user.name}
               profile_picture={this.state.user.profile_picture}
             />
-            {this.state.saved || true ? (
+            {this.state.saved ? (
              <div className="result">
                 <h2 className="result__title">Save Complete!</h2>
                 <p className="result__text">

@@ -1,6 +1,7 @@
 .playlists {
 	text-align: center;
 	margin-bottom: 1em;
+	margin-top: -125px;
 }
 
 .playlist {
@@ -10,6 +11,7 @@
 	text-align: center;
 	margin: 5px;
 	padding: 0 20px 20px;
+	background: #ffffff;
 	border: 1px solid #efefef;
 	border-radius: 5px;
 	box-shadow: 0px 10px 20px rgba(0,0,0,0.2);

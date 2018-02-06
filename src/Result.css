@@ -1,0 +1,12 @@
+.result {
+    position: relative;
+    background: #ffffff;
+    width: 90%; 
+    max-width: 420px;
+    margin: -125px auto 0;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+    text-align: center;
+    z-index: 1;
+}

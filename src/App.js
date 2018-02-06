@@ -62,7 +62,7 @@ class App extends Component {
       this.setState({
         playlists: playlists.map((item) => {
           if (item.name !== null) {
-            return {name: item.name, songs: []}
+            return {name: item.name, songs: [], image: item.images[0].url}
           } else {
             return {name: 'Unnamed', songs: []}
           }
@@ -104,7 +104,7 @@ class App extends Component {
             />
 
             {playlistsToRender.map(playlist => (
-              <Playlist key={playlist.name} playlist={playlist} />
+              <Playlist key={playlist.name} playlist={playlist} image={playlist.image}/>
             ))}
           </div>
         ) : (

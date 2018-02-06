@@ -50,7 +50,8 @@ class App extends Component {
         this.setState({
           user: {
             name: userData.display_name || 'No Username',
-            profile_picture: userData.images[0].url || 'https://placehold.it/300/300'
+            profile_picture: userData.images[0].url || 'https://placehold.it/300/300',
+            uid: userData.id
           }
         });
       }
@@ -69,7 +70,6 @@ class App extends Component {
       const playlists = data.items;
       // Look for discover & release
       let noNullPlaylists = playlists.filter(playlist => playlist.name !== null);
-      console.log(noNullPlaylists);
       let playlistsToSave = noNullPlaylists.filter(playlist => {
         if (playlist.name.toLowerCase().includes('discover weekly') || playlist.name.toLowerCase().includes('release radar')) {
           return true;
@@ -80,9 +80,38 @@ class App extends Component {
       });
     }).catch(error => console.log(error));
   }
+  createPlaylist() {
+    let query = queryString.parse(window.location.search);
+    const accessToken = query.access_token;
+    const slug = "https://api.spotify.com/v1/";
+
+    for (let i=0; i<this.state.selected.length; i++) {
+      // Build the playlist details
+      const currentPlaylist = this.state.selected[i];
+      let toBuild = this.state.playlists.filter(playlist => {
+        if (playlist.name === currentPlaylist) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      toBuild[0].name = 'TEST TEST TEST';
+      console.log(toBuild, accessToken);
+      fetch(`${slug}playlists/${this.state.user.uid}/playlists`, {
+        method: 'POST',
+        body: JSON.stringify(toBuild),
+        headers: new Headers ({
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        })
+      })
+      .then(response => response.json())
+      .catch(error => console.log('Error:', error))
+      .then(response => console.log('Success', response));
+    }
+  }
   componentDidMount() {
     this.fetchData();
-    
   }
   render() {
     return (
@@ -133,7 +162,7 @@ class App extends Component {
             <div className="create">
               {this.state.selected.length ? (
                 <div>
-                  <button className="button button--create">Save Selected</button>
+                  <button onClick={() => this.createPlaylist()} className="button button--create">Save Selected</button>
                 </div>
               ) : ( <div></div> )}
             </div>

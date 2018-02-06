@@ -1,6 +1,10 @@
+.playlists {
+	text-align: center;
+}
+
 .playlist {
 	display: inline-block;
-	width: 100%;
+	max-width: 250px;
 	text-align: center;
 	margin: 5px;
 	padding: 0 20px 20px;

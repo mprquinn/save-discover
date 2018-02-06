@@ -15,7 +15,8 @@ class App extends Component {
       loggedIn: false,
       user: {},
       filterString: "",
-      playlists: []
+      playlists: [],
+      selected: []
     };
   }
   handleErrors(response) {
@@ -95,15 +96,16 @@ class App extends Component {
               profile_picture={this.state.user.profile_picture}
             />
             
-            {this.state.playlists.map(playlist => (
-              <Playlist
-                key={playlist.name}
-                playlist={playlist}
-                image={playlist.images[0].url}
-              />
-            ))}
-            
-            
+            <div className="playlists">
+              {this.state.playlists.map(playlist => (
+                <Playlist
+                  key={playlist.name}
+                  playlist={playlist}
+                  image={playlist.images[0].url}
+                />
+              ))}
+            </div>
+        
           </div>
         ) : (
           <div className="log-in-wrapper">

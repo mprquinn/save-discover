@@ -6,7 +6,9 @@ class Title extends Component {
     return (
       <div className="title">
          <h1 className="title__name">Your Playlists</h1>
-         <img className="title__image" src={this.props.profile_picture} alt={this.props.username}/ >
+         <div className="title__image-wrap">
+          <img className="title__image" src={this.props.profile_picture} alt={this.props.username}/ >
+         </div>
       </div>
     );
   }

@@ -95,20 +95,28 @@ class App extends Component {
           return false;
         }
       });
+      console.log(toBuild[0]);
       const tracks = toBuild[0].tracks;
       // Manually create the json here since the spotify one has the wrong user info
-      
-      // fetch(`${slug}users/${this.state.user.uid}/playlists`, {
-      //   method: 'POST',
-      //   body: JSON.stringify(toBuild),
-      //   headers: new Headers ({
-      //     Authorization: `Bearer ${accessToken}`,
-      //     'Content-Type': 'application/json'
-      //   })
-      // })
-      // .then(response => response.json())
-      // .catch(error => console.log('Error:', error))
-      // .then(response => console.log('Success', response));
+      let newPlaylist = {
+        collaborative: false,
+        name: 'Test Test Hello',
+        public: false,
+        description: 'Auto generated playlist'
+      };
+
+      console.log(newPlaylist);
+      fetch(`${slug}users/${this.state.user.uid}/playlists`, {
+        method: 'POST',
+        body: JSON.stringify(newPlaylist),
+        headers: new Headers ({
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        })
+      })
+      .then(response => response.json())
+      .catch(error => console.log('Error:', error))
+      .then(response => console.log('Success', response));
     }
   }
   componentDidMount() {

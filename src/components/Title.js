@@ -6,6 +6,7 @@ class Title extends Component {
     return (
       <div className="title">
          <h1>{this.props.username}'s Playlists</h1>
+         <img src={this.props.profile_picture} alt={this.props.username}/ >
       </div>
     );
   }

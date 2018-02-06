@@ -33,5 +33,7 @@
   text-align: center;
   padding: 20px;
   margin: 0 auto;
+  font-weight: 600;
+  letter-spacing: 1px;
   cursor: pointer;
 }

@@ -51,11 +51,7 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    setTimeout(_ => {
-      this.setState({
-        serverData: fakeServerData
-      });
-    }, 1000);
+    
     // setTimeout(_ => {
     //   this.setState({
     //     filterString: 'Weekly'
@@ -85,7 +81,9 @@ class App extends Component {
                 <Playlist key={playlist.name} playlist={playlist} />
               )}
 
-          </div> : <p className="loading">Loading...</p>
+          </div> : <div class="log-in-wrapper">
+            <button onClick={() => window.location = 'http:// localhost:8888/login'} class="button">Click Here to Sign In</button>
+          </div>
         }
       </div>
     );

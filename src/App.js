@@ -107,7 +107,6 @@ class App extends Component {
         description: 'Auto generated playlist'
       };
 
-      console.log(tracks);
       fetch(`${slug}users/${this.state.user.uid}/playlists`, {
         method: 'POST',
         body: JSON.stringify(newPlaylist),
@@ -119,14 +118,12 @@ class App extends Component {
       .then(response => response.json())
       .catch(error => console.log('Error:', error))
       .then(response => {
-        console.log('Success', response);
-        console.log('oldId', oldId);
         // Fill tracks here
-        this.fillTracks(this.state.user.uid, oldId, response.id, tracks);
+        this.getTracks(this.state.user.uid, oldId, response.id, tracks);
       });
     }
   }
-  fillTracks(uid, oldId, newPlaylistId, tracks) {
+  getTracks(uid, oldId, newPlaylistId, tracks) {
     let query = queryString.parse(window.location.search);
     const accessToken = query.access_token;
     const slug = "https://api.spotify.com/v1/";
@@ -145,7 +142,33 @@ class App extends Component {
     .then(response => {
       console.log('Success 2', response);
       // Then add them
+      // Get all track uris
+      let newTrackList = response.items.map(item => {
+        return item.track.uri;
+      });
+      const newTracks = {
+        uris: newTrackList
+      };
+      // Fill Tracks
+      fetch(`${slug}users/${uid}/playlists/${newPlaylistId}/tracks`, {
+        method: 'POST',
+        body: JSON.stringify(newTracks),
+        headers: new Headers ({
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        })
+      })
+      .catch(error => console.log('Error:', error))
+      .then(response => {
+        // Fill tracks here
+        console.log('Filled success', response);
+        
+      });
+
     });
+  }
+  fillTracks(uid, playlistId, tracks) {
+    // Move fill into here
   }
   componentDidMount() {
     this.fetchData();

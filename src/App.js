@@ -14,7 +14,8 @@ class App extends Component {
       user: {},
       filterString: "",
       playlists: [],
-      selected: []
+      selected: [],
+      saved: false
     };
   }
   handleErrors(response) {
@@ -35,57 +36,66 @@ class App extends Component {
         loggedIn: true
       });
     }
-    
+
     // Get user data
     fetch(`${slug}me`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    .then(this.handlErrors)
-    .then(response => response.json())
-    .then(data => {
-      const userData = data;
-      if (userData.email) {
-        this.setState({
-          user: {
-            name: userData.display_name || 'No Username',
-            profile_picture: userData.images[0].url || 'https://placehold.it/300/300',
-            uid: userData.id
-          }
-        });
-      }
-    }).catch(error => console.log(error));
-    
+      .then(this.handlErrors)
+      .then(response => response.json())
+      .then(data => {
+        const userData = data;
+        if (userData.email) {
+          this.setState({
+            user: {
+              name: userData.display_name || "No Username",
+              profile_picture:
+                userData.images[0].url || "https://placehold.it/300/300",
+              uid: userData.id
+            }
+          });
+        }
+      })
+      .catch(error => console.log(error));
+
     // Get playlist data
     fetch(`${slug}me/playlists?limit=50`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     })
-    .then(this.handleErrors)
-    .then(response => {
+      .then(this.handleErrors)
+      .then(response => {
         return response.json();
-    }).then(data => {
-      const playlists = data.items;
-      // Look for discover & release
-      let noNullPlaylists = playlists.filter(playlist => playlist.name !== null);
-      let playlistsToSave = noNullPlaylists.filter(playlist => {
-        if (playlist.name.toLowerCase().includes('discover weekly') || playlist.name.toLowerCase().includes('release radar')) {
-          return true;
-        }
-      });
-      this.setState({
-        playlists: playlistsToSave
-      });
-    }).catch(error => console.log(error));
+      })
+      .then(data => {
+        const playlists = data.items;
+        // Look for discover & release
+        let noNullPlaylists = playlists.filter(
+          playlist => playlist.name !== null
+        );
+        let playlistsToSave = noNullPlaylists.filter(playlist => {
+          if (
+            playlist.name.toLowerCase().includes("discover weekly") ||
+            playlist.name.toLowerCase().includes("release radar")
+          ) {
+            return true;
+          }
+        });
+        this.setState({
+          playlists: playlistsToSave
+        });
+      })
+      .catch(error => console.log(error));
   }
   createPlaylist() {
     let query = queryString.parse(window.location.search);
     const accessToken = query.access_token;
     const slug = "https://api.spotify.com/v1/";
 
-    for (let i=0; i<this.state.selected.length; i++) {
+    for (let i = 0; i < this.state.selected.length; i++) {
       // Build the playlist details
       const currentPlaylist = this.state.selected[i];
       let toBuild = this.state.playlists.filter(playlist => {
@@ -95,77 +105,79 @@ class App extends Component {
           return false;
         }
       });
-      console.log(toBuild[0]);
+
       const tracks = toBuild[0].tracks;
       const oldId = toBuild[0].id;
-      const date = new Date;
+      const date = new Date();
       // Manually create the json here since the spotify one has the wrong user info
       let newPlaylist = {
         collaborative: false,
-        name: `SAVED ${currentPlaylist} on ${date.getMonth()+1}/${date.getDate()+1}/${date.getFullYear()}`,
+        name: `SAVED ${currentPlaylist} on ${date.getMonth() +
+          1}/${date.getDate() + 1}/${date.getFullYear()}`,
         public: false,
-        description: 'Auto generated playlist'
+        description: "Auto generated playlist"
       };
 
       fetch(`${slug}users/${this.state.user.uid}/playlists`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(newPlaylist),
-        headers: new Headers ({
+        headers: new Headers({
           Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         })
       })
-      .then(response => response.json())
-      .catch(error => console.log('Error:', error))
-      .then(response => {
-        // Fill tracks here
-        this.getTracks(this.state.user.uid, oldId, response.id, tracks);
-      });
+        .then(response => response.json())
+        .catch(error => console.log("Error:", error))
+        .then(response => {
+          // Fill tracks here
+          this.getTracks(this.state.user.uid, oldId, response.id, tracks);
+        });
     }
   }
   getTracks(uid, oldId, newPlaylistId, tracks) {
     let query = queryString.parse(window.location.search);
     const accessToken = query.access_token;
     const slug = "https://api.spotify.com/v1/";
-    
+
     const url = `${slug}users/spotify/playlists/${oldId}/tracks`;
 
     // You have to get tracks first
     fetch(url, {
-      method: 'GET',
-      headers: new Headers ({
+      method: "GET",
+      headers: new Headers({
         Authorization: `Bearer ${accessToken}`
       })
     })
-    .then(response => response.json())
-    .catch(error => console.log('Error:', error))
-    .then(response => {
-      console.log('Success 2', response);
-      // Then add them
-      // Get all track uris
-      let newTrackList = response.items.map(item => {
-        return item.track.uri;
-      });
-      const newTracks = {
-        uris: newTrackList
-      };
-      // Fill Tracks
-      fetch(`${slug}users/${uid}/playlists/${newPlaylistId}/tracks`, {
-        method: 'POST',
-        body: JSON.stringify(newTracks),
-        headers: new Headers ({
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        })
-      })
-      .catch(error => console.log('Error:', error))
+      .then(response => response.json())
+      .catch(error => console.log("Error:", error))
       .then(response => {
-        // Fill tracks here
-        console.log('Filled success', response);
-        
+        // Get all track uris
+        let newTrackList = response.items.map(item => {
+          return item.track.uri;
+        });
+        const newTracks = {
+          uris: newTrackList
+        };
+        // Then add them
+        // Fill Tracks
+        fetch(`${slug}users/${uid}/playlists/${newPlaylistId}/tracks`, {
+          method: "POST",
+          body: JSON.stringify(newTracks),
+          headers: new Headers({
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+          })
+        })
+          .catch(error => console.log("Error:", error))
+          .then(response => {
+            // Fill tracks here
+            console.log("Filled success", response);
+            // Done!
+            this.setState({
+              saved: true
+            });
+          });
       });
-
-    });
   }
   fillTracks(uid, playlistId, tracks) {
     // Move fill into here
@@ -183,19 +195,24 @@ class App extends Component {
               username={this.state.user && this.state.user.name}
               profile_picture={this.state.user.profile_picture}
             />
-            
-            <div className="playlists">
+            {this.state.saved ? (
+             <div className="result">
+                <h1>SAVED</h1>
+             </div> 
+            ):(
+            <div>
+              <div className="playlists">
               {this.state.playlists.map(playlist => (
                 <Playlist
                   onSelect={(name, action) => {
                     const selected = [...this.state.selected];
-  
-                    if (action === 'select') {
+
+                    if (action === "select") {
                       selected.push(name);
                       this.setState({
                         selected
                       });
-                    } else if (action === 'deselect') {
+                    } else if (action === "deselect") {
                       let newSelected = selected.filter(item => {
                         if (item !== name) {
                           return true;
@@ -205,12 +222,10 @@ class App extends Component {
                       });
                       this.setState({
                         selected: newSelected
-                      })
+                      });
                     }
                     // Filter by name
                     // let selected = this.state.playlists.filter(playlist => playlist.name === name);
-                    
-                    
                   }}
                   key={playlist.name}
                   playlist={playlist}
@@ -222,11 +237,19 @@ class App extends Component {
             <div className="create">
               {this.state.selected.length ? (
                 <div>
-                  <button onClick={() => this.createPlaylist()} className="button button--create">Save Selected</button>
+                  <button
+                    onClick={() => this.createPlaylist()}
+                    className="button button--create"
+                  >
+                    Save Selected
+                  </button>
                 </div>
-              ) : ( <div></div> )}
+              ) : (
+                <div />
+              )}
             </div>
-        
+            </div>
+            )}
           </div>
         ) : (
           <div className="log-in-wrapper">

@@ -1,0 +1,14 @@
+.create {
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.button--create {
+    border-radius: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.button--create:hover {
+    background-color: #13bb71;
+}

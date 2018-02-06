@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Title from "./components/Title";
 import Playlist from "./components/Playlist";
 import "./App.css";
+import "./Create.css";
 import queryString from "query-string";
 
 class App extends Component {
@@ -81,6 +82,7 @@ class App extends Component {
   }
   componentDidMount() {
     this.fetchData();
+    
   }
   render() {
     return (
@@ -126,6 +128,14 @@ class App extends Component {
                   image={playlist.images[0].url}
                 />
               ))}
+            </div>
+
+            <div className="create">
+              {this.state.selected.length ? (
+                <div>
+                  <button className="button button--create">Save Selected</button>
+                </div>
+              ) : ( <div></div> )}
             </div>
         
           </div>

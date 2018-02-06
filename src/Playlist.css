@@ -1,7 +1,10 @@
 .playlist {
 	display: inline-block;
-	width: 33%;
+	width: 100%;
 	text-align: center;
+	margin: 5px;
+	padding: 5px;
+	box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
 }
 
 .playlist__list {
@@ -11,4 +14,20 @@
 
 .playlist__song {
 	list-style: none;
+}
+
+.playlist__image {
+	width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+	.playlist {
+		width: calc(50% - 20px);
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.playlist {
+		width: calc(33% - 20px);
+	}
 }

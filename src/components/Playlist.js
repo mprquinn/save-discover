@@ -9,7 +9,7 @@ class Playlist extends Component {
           <div>
             <img src="" alt=""/>
             <h3 className="playlist__name">{this.props.playlist.name}</h3>
-            <img src={this.props.image} />
+            <img src={this.props.image} className="playlist__image" />
             <ul>
               {this.props.playlist.songs.map(song => 
                 <li key={song.name}className="playlist__item">{song.name}</li>

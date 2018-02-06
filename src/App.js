@@ -7,17 +7,6 @@ import Playlist from "./components/Playlist";
 import "./App.css";
 import queryString from "query-string";
 
-// Dummy data for now
-let fakeServerData = {
-  user: {
-    name: "",
-    uid: "",
-    profile_picture: "",
-    playlists: [],
-    loggedIn: false
-  }
-};
-
 class App extends Component {
   constructor() {
     super();
@@ -29,6 +18,12 @@ class App extends Component {
       playlists: []
     };
   }
+  handleErrors(response) {
+    if (!response.ok) {
+      throw Error('test',response);
+    }
+    return response;
+  }
   fetchData() {
     let query = queryString.parse(window.location.search);
     const parsed = query.access_token;
@@ -37,38 +32,48 @@ class App extends Component {
       headers: {
         Authorization: `Bearer ${parsed}`
       }
-    }).then(response => {
+    })
+    .then(this.handleErrors)
+    .then(response => {
         return response.json();
     }).then(data => {
-      this.setState({
-        loggedIn: true,
-        user: {
-          name: data.display_name ? data.display_name : data.id,
-          uid: data.id,
-          profile_picture: data.images[0].url
-        },
-      });
-    });
+      if (data.id != undefined) {
+        this.setState({
+          loggedIn: true,
+          user: {
+            name: data.display_name ? data.display_name : data.id,
+            uid: data.id,
+            profile_picture: data.images[0].url
+          },
+        });
+      }
+    }).catch(error => console.log(error));
 
     fetch("https://api.spotify.com/v1/me/playlists", {
       headers: {
         Authorization: `Bearer ${parsed}`
       }
-    }).then(response => {
+    })
+    .then(this.handleErrors)
+    .then(response => {
       return response.json();
     }).then(data => {
       const playlists = data.items;
       console.log(data.items);
-      this.setState({
-        playlists: playlists.map((item) => {
-          if (item.name !== null) {
+      if (data.items != undefined) {
+        this.setState({
+          playlists: playlists.filter((playlist) => {
+            if (playlist.name !== null) {
+              return true;
+            } else {
+              return false;
+            }
+          }).map((item) => {
             return {name: item.name, songs: [], image: item.images[0].url}
-          } else {
-            return {name: 'Unnamed', songs: []}
-          }
-        })
-      });
-    })
+          })
+        });
+      }
+    }).catch(error => console.log(error));
   }
   componentDidMount() {
     this.fetchData();
@@ -85,7 +90,7 @@ class App extends Component {
       : [];
     return (
       <div className="App">
-        {this.state.user ? (
+        {this.state.loggedIn ? (
           <div>
             {/* Love you, React */}
             <Title

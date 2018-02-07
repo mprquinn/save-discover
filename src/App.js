@@ -64,7 +64,7 @@ class App extends Component {
       .catch(error => console.log(error));
 
     // Get playlist data
-    fetch(`${slug}me/playlists?limit=50`, {
+    fetch(`${slug}me/playlists?limit=35`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
@@ -85,12 +85,11 @@ class App extends Component {
         );
         let playlistsToSave = noNullPlaylists.filter(playlist => {
           if (
-            (playlist.name.toLowerCase().includes("discover weekly") &&
+            (playlist.name.toLowerCase() === "discover weekly" &&
               !playlist.name.toLowerCase().includes("saved")) ||
-            (playlist.name.toLowerCase().includes("release radar") &&
+            (playlist.name.toLowerCase() === "release radar" &&
               !playlist.name.toLowerCase().includes("saved"))
           ) {
-            // console.log(playlist.name);
             return true;
           } else {
             return false;

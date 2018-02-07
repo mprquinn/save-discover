@@ -1,68 +1,68 @@
 .playlists {
-	text-align: center;
-	margin-bottom: 1em;
-	margin-top: -125px;
+  text-align: center;
+  margin-bottom: 1em;
+  margin-top: -125px;
 }
 
 .playlist {
-	position: relative;
-	display: inline-block;
-	max-width: 250px;
-	text-align: center;
-	margin: 5px;
-	padding: 0 20px 20px;
-	background: #efefef;
-	border: 1px solid #efefef;
-	border-radius: 5px;
-	box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+  position: relative;
+  display: inline-block;
+  max-width: 250px;
+  text-align: center;
+  margin: 5px;
+  padding: 0 20px 20px;
+  background: #efefef;
+  border: 1px solid #efefef;
+  border-radius: 5px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .playlist--selected::after {
-	content: '✔';
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 100px;
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	color: #ffffff;
-	background: rgba(20, 153, 95, 0.445);
-	z-index: 10;
+  content: "✔";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  color: #ffffff;
+  background: rgba(20, 153, 95, 0.445);
+  z-index: 10;
 }
 
 .playlist__list {
-	margin: 0;
-	padding: 0 0 0 20px;
-	text-align: left;
+  margin: 0;
+  padding: 0 0 0 20px;
+  text-align: left;
 }
 
 .playlist__name {
-	margin: 1em 0;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	color: #1d1d1d;
+  margin: 1em 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1d1d1d;
 }
 
 .playlist__item {
-	text-align: left;
+  text-align: left;
 }
 
 .playlist__image {
-	width: calc(100% - 20px);
-	border: 5px solid #1d1d1d;
+  width: calc(100% - 20px);
+  border: 5px solid #1d1d1d;
 }
 
 @media screen and (min-width: 768px) {
-	.playlist {
-		width: calc(50% - 52px);
-	}
+  .playlist {
+    width: calc(50% - 52px);
+  }
 }
 
 @media screen and (min-width: 1200px) {
-	.playlist {
-		width: calc(33% - 52px);
-	}
+  .playlist {
+    width: calc(33% - 52px);
+  }
 }

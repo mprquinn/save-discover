@@ -1,23 +1,23 @@
 .result {
-    position: relative;
-    background: #ffffff;
-    width: 90%; 
-    max-width: 420px;
-    margin: -125px auto 0;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
-    text-align: center;
-    z-index: 1;
-    transition: all 0.6s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  position: relative;
+  background: #ffffff;
+  width: 90%;
+  max-width: 420px;
+  margin: -125px auto 0;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 1;
+  transition: all 0.6s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
 .result-wrapper-appear {
-    opacity: 0;
-    transform: translateY(100%);
+  opacity: 0;
+  transform: translateY(100%);
 }
 
 .result-wrapper-enter.result-wrapper-appear-active {
-    opacity: 1;
-    transform: translateY(0);
+  opacity: 1;
+  transform: translateY(0);
 }

@@ -4,6 +4,7 @@ import Playlist from "./components/Playlist";
 import "./App.css";
 import "./Create.css";
 import "./Result.css";
+import "./Attribution.css";
 import queryString from "query-string";
 import { CSSTransitionGroup } from "react-transition-group";
 
@@ -43,11 +44,12 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         const userData = data;
-        let userImage = '';
+        let userImage = "";
         if (data.profile_picture) {
           userImage = data.profile_picture;
         } else {
-          userImage = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/36124/save-playlists.jpg';
+          userImage =
+            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/36124/save-playlists.jpg";
         }
         if (userData.email) {
           this.setState({
@@ -88,6 +90,7 @@ class App extends Component {
             (playlist.name.toLowerCase().includes("release radar") &&
               !playlist.name.toLowerCase().includes("saved"))
           ) {
+            // console.log(playlist.name);
             return true;
           } else {
             return false;
@@ -121,8 +124,7 @@ class App extends Component {
       // Manually create the json here since the spotify one has the wrong user info
       let newPlaylist = {
         collaborative: false,
-        name: `${date.getMonth() +
-          1}/${date.getDate() + 1}/${date.getFullYear()} ${currentPlaylist} - Autosaved`,
+        name: `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} ${currentPlaylist} - Autosaved`,
         public: false,
         description: "Auto generated playlist"
       };
@@ -265,19 +267,14 @@ class App extends Component {
                   transitionAppear={true}
                   transitionAppearTimeout={100}
                 >
-                
                   <div className="result">
                     <h2 className="result__title">Save Complete!</h2>
                     <p className="result__text">
                       Your playlist(s) have been generated and saved to your
                       account. They are saved in the following format:<br />
-                      <strong>
-                        MM/DD/YYYY Name - Autosaved
-                      </strong>
+                      <strong>MM/DD/YYYY Name - Autosaved</strong>
                     </p>
-                    <p>
-                      Playlists can take a few minutes to show up.
-                    </p>
+                    <p>Playlists can take a few minutes to show up.</p>
                   </div>
                 </CSSTransitionGroup>
               ) : (
@@ -340,7 +337,6 @@ class App extends Component {
                 transitionLeaveTimeout={600}
               >
                 <div className="log-in__image-wrap">
-
                   <img
                     src={`https://s3-us-west-2.amazonaws.com/s.cdpn.io/36124/save-playlists.jpg`}
                     className="log-in__image"
@@ -348,7 +344,6 @@ class App extends Component {
                   />
                 </div>
                 <div className="log-in__text">
-                
                   <h1>Save Playlists</h1>
                   <p>Please log in to continue.</p>
                   <button

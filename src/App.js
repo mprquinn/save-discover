@@ -335,8 +335,9 @@ class App extends Component {
                 transitionLeaveTimeout={600}
               >
                 <div className="log-in__image-wrap">
+
                   <img
-                    src="./images/save-playlists.JPG"
+                    src={`./assets/images/save-playlists.jpg`}
                     className="log-in__image"
                     alt="Save Playlists"
                   />

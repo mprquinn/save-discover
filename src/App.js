@@ -43,12 +43,17 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         const userData = data;
+        let userImage = '';
+        if (data.profile_picture) {
+          userImage = data.profile_picture;
+        } else {
+          userImage = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/36124/save-playlists.jpg';
+        }
         if (userData.email) {
           this.setState({
             user: {
               name: userData.display_name || "No Username",
-              profile_picture:
-                userData.images[0].url || "https://placehold.it/300/300",
+              profile_picture: userImage,
               uid: userData.id
             }
           });

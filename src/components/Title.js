@@ -6,6 +6,7 @@ class Title extends Component {
     return (
       <div className="title">
         <h1 className="title__name">Save Your Playlists</h1>
+        <p className="title__details">Select which playlist you want to save:</p>
         <div className="title__image-wrap">
           <img
             className="title__image"

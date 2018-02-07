@@ -45,8 +45,8 @@ class App extends Component {
       .then(data => {
         const userData = data;
         let userImage = "";
-        if (data.profile_picture) {
-          userImage = data.profile_picture;
+        if (data.images.length) {
+          userImage = data.images[0].url;
         } else {
           userImage =
             "https://s3-us-west-2.amazonaws.com/s.cdpn.io/36124/save-playlists.jpg";

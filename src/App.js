@@ -116,8 +116,8 @@ class App extends Component {
       // Manually create the json here since the spotify one has the wrong user info
       let newPlaylist = {
         collaborative: false,
-        name: `SAVED ${currentPlaylist} on ${date.getMonth() +
-          1}/${date.getDate() + 1}/${date.getFullYear()}`,
+        name: `${date.getMonth() +
+          1}/${date.getDate() + 1}/${date.getFullYear()} ${currentPlaylist} - Autosaved`,
         public: false,
         description: "Auto generated playlist"
       };
@@ -264,10 +264,13 @@ class App extends Component {
                     <h2 className="result__title">Save Complete!</h2>
                     <p className="result__text">
                       Your playlist(s) have been generated and saved to your
-                      account. They are saved in the following format:<br />{" "}
+                      account. They are saved in the following format:<br />
                       <strong>
-                        SAVED Discover Weekly (or Release Radar) on $todays_date
+                        MM/DD/YYYY Name - Autosaved
                       </strong>
+                    </p>
+                    <p>
+                      Playlists can take a few minutes to show up.
                     </p>
                   </div>
                 </CSSTransitionGroup>

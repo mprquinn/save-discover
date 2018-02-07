@@ -337,7 +337,7 @@ class App extends Component {
                 <div className="log-in__image-wrap">
 
                   <img
-                    src={`./assets/images/save-playlists.jpg`}
+                    src={`https://s3-us-west-2.amazonaws.com/s.cdpn.io/36124/save-playlists.jpg`}
                     className="log-in__image"
                     alt="Save Playlists"
                   />

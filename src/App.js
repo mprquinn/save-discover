@@ -330,27 +330,30 @@ class App extends Component {
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={600}
               >
-                <div class="log-in__image-wrap">
+                <div className="log-in__image-wrap">
                   <img
                     src="./images/save-playlists.JPG"
                     className="log-in__image"
                     alt="Save Playlists"
                   />
                 </div>
-                <h1>Save Playlists</h1>
-                <p>Please log in to continue.</p>
-                <button
-                  onClick={() => {
-                    if (window.location.href.includes("localhost")) {
-                      window.location = `http://localhost:8888/login`;
-                    } else {
-                      window.location = `https://save-discover-backend.herokuapp.com/login`;
-                    }
-                  }}
-                  className="button"
-                >
-                  Click Here to Sign In
-                </button>
+                <div className="log-in__text">
+                
+                  <h1>Save Playlists</h1>
+                  <p>Please log in to continue.</p>
+                  <button
+                    onClick={() => {
+                      if (window.location.href.includes("localhost")) {
+                        window.location = `http://localhost:8888/login`;
+                      } else {
+                        window.location = `https://save-discover-backend.herokuapp.com/login`;
+                      }
+                    }}
+                    className="button"
+                  >
+                    Click Here to Sign In
+                  </button>
+                </div>
               </CSSTransitionGroup>
             </div>
           )}

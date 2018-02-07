@@ -5,12 +5,15 @@
 }
 
 .button--create {
+    background: transparent;
+    border-color: #ffffff;
     border-radius: 30px;
-    transition: all 0.6s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    transition: all 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
 .button--create:hover {
-    background-color: #13bb71;
+    background-color: rgba(0,0,0,0.8);
+    border-color: #ffffff;
 }
 
 .create-enter {

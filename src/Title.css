@@ -1,5 +1,9 @@
 .title {
 	text-align: center;
+	margin-top: 50px;
+	color: #efefef;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
 }
 
 .title__image-wrap {

@@ -1,7 +1,15 @@
+body {
+  background: #19e68c; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #19e68c 0%, #13ad69 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #19e68c 0%,#13ad69 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #19e68c 0%,#13ad69 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#19e68c', endColorstr='#13ad69',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  height: 100vh;
+}
 .App {
   box-sizing: border-box;
   margin: 0;
-  padding: 50px 20px;
+  padding: 0 20px;
   font-size: 18px;
   line-height: 1.4em;
   transition: all 0.6s cubic-bezier(0.785, 0.135, 0.15, 0.86);
@@ -32,6 +40,8 @@
   height: 250px;
   border-radius: 50%;
   overflow: hidden;
+  margin: 0 auto;
+  z-index: 1;
 }
 
 .log-in__image {
@@ -42,6 +52,16 @@
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.log-in__text {
+  padding: 0 20px 20px;
+	background: #ffffff;
+	border: 1px solid #efefef;
+	border-radius: 5px;
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+  margin-top: -125px;
+  padding-top: 125px;
 }
 
 .log-in-wrapper span {

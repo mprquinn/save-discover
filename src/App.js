@@ -260,6 +260,7 @@ class App extends Component {
                   transitionAppear={true}
                   transitionAppearTimeout={100}
                 >
+                
                   <div className="result">
                     <h2 className="result__title">Save Complete!</h2>
                     <p className="result__text">

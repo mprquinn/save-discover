@@ -5,6 +5,7 @@ import "./App.css";
 import "./Create.css";
 import "./Result.css"
 import queryString from "query-string";
+import { URLSearchParams } from "url";
 
 class App extends Component {
   constructor() {
@@ -26,16 +27,16 @@ class App extends Component {
     return response;
   }
   fetchData() {
-    let query = queryString.parse(window.location.search);
-    const accessToken = query.access_token;
+    const storage = window.localStorage;
+    const accessToken = storage.getItem('access_token');
     const slug = "https://api.spotify.com/v1/";
-
-    if (!accessToken) {
-      return;
-    } else {
+    if (accessToken !== 'undefined') {
       this.setState({
         loggedIn: true
       });
+      
+    } else {
+      return;
     }
 
     // Get user data
@@ -92,8 +93,8 @@ class App extends Component {
       .catch(error => console.log(error));
   }
   createPlaylist() {
-    let query = queryString.parse(window.location.search);
-    const accessToken = query.access_token;
+    const storage = window.localStorage;
+    const accessToken = storage.getItem('access_token');
     const slug = "https://api.spotify.com/v1/";
 
     for (let i = 0; i < this.state.selected.length; i++) {
@@ -136,8 +137,8 @@ class App extends Component {
     }
   }
   getTracks(uid, oldId, newPlaylistId, tracks) {
-    let query = queryString.parse(window.location.search);
-    const accessToken = query.access_token;
+    const storage = window.localStorage;
+    const accessToken = storage.getItem('access_token');
     const slug = "https://api.spotify.com/v1/";
 
     const url = `${slug}users/spotify/playlists/${oldId}/tracks`;
@@ -183,7 +184,45 @@ class App extends Component {
   fillTracks(uid, playlistId, tracks) {
     // Move fill into here
   }
+  removeUrlParameter(url, parameter) {
+    var urlParts = url.split('?');
+  
+    if (urlParts.length >= 2) {
+      // Get first part, and remove from array
+      var urlBase = urlParts.shift();
+  
+      // Join it back up
+      var queryString = urlParts.join('?');
+  
+      var prefix = encodeURIComponent(parameter) + '=';
+      var parts = queryString.split(/[&;]/g);
+  
+      // Reverse iteration as may be destructive
+      for (var i = parts.length; i-- > 0; ) {
+        // Idiom for string.startsWith
+        if (parts[i].lastIndexOf(prefix, 0) !== -1) {
+          parts.splice(i, 1);
+        }
+      }
+  
+      url = urlBase + '?' + parts.join('&');
+    }
+  
+    return url;
+  }
+  componentWillMount() {
+    let query = queryString.parse(window.location.search);
+    const accessToken = query.access_token;
+    let storage = window.localStorage;
+    if (storage.getItem('access_token') === 'undefined') {
+      storage.setItem('access_token', accessToken);
+    }
+  }
   componentDidMount() {
+    let query = queryString.parse(window.location.search);
+    let cleanURL = this.removeUrlParameter(window.location.href, 'access_token');
+    // window.location.href = cleanURL;
+    window.history.replaceState({data: ''}, 'Save Discover', cleanURL);
     this.fetchData();
   }
   render() {

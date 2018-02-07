@@ -4,6 +4,7 @@
   padding: 50px 20px;
   font-size: 18px;
   line-height: 1.4em;
+  transition: all 0.6s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
 .loading {
@@ -24,6 +25,31 @@
   align-items: center;
 }
 
+.log-in-wrapper span {
+  display: block;
+  margin: 0 auto;
+  transition: all 0.6s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+.log-in-enter {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.log-in-enter.log-in-enter-active {
+  opacity: 1;
+}
+
+.log-in-leave {
+  transform: translateY(0%);
+  opacity: 1;
+}
+
+.log-in-leave.log-in-leave-active {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
 .button {
   background: #19e68c;
   border: 1px solid #19e68c;
@@ -36,4 +62,15 @@
   font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
+}
+
+/* Animations */
+.App-appear {
+  transform: translateY(50%);
+  opacity: 0.2;
+}
+
+.App-appear-active {
+  transform: translateY(0);
+  opacity: 1;
 }

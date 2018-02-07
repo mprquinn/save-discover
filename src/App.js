@@ -3,9 +3,9 @@ import Title from "./components/Title";
 import Playlist from "./components/Playlist";
 import "./App.css";
 import "./Create.css";
-import "./Result.css"
+import "./Result.css";
 import queryString from "query-string";
-import { URLSearchParams } from "url";
+import { CSSTransitionGroup } from "react-transition-group";
 
 class App extends Component {
   constructor() {
@@ -21,20 +21,26 @@ class App extends Component {
     };
   }
   handleErrors(response) {
+    const _this = this;
     if (!response.ok) {
-      throw Error("test", response);
+      console.log(response);
+      if (response.status === 401) {
+        let storage = window.localStorage;
+        storage.setItem("access_token", "undefined");
+        _this.fetchData();
+      }
+      throw Error(response.error);
     }
     return response;
   }
   fetchData() {
     const storage = window.localStorage;
-    const accessToken = storage.getItem('access_token');
+    const accessToken = storage.getItem("access_token");
     const slug = "https://api.spotify.com/v1/";
-    if (accessToken !== 'undefined') {
+    if (accessToken !== "undefined") {
       this.setState({
         loggedIn: true
       });
-      
     } else {
       return;
     }
@@ -80,10 +86,14 @@ class App extends Component {
         );
         let playlistsToSave = noNullPlaylists.filter(playlist => {
           if (
-            (playlist.name.toLowerCase().includes("discover weekly") && !playlist.name.toLowerCase().includes('saved')) ||
-            (playlist.name.toLowerCase().includes("release radar") && !playlist.name.toLowerCase().includes('saved'))
+            (playlist.name.toLowerCase().includes("discover weekly") &&
+              !playlist.name.toLowerCase().includes("saved")) ||
+            (playlist.name.toLowerCase().includes("release radar") &&
+              !playlist.name.toLowerCase().includes("saved"))
           ) {
             return true;
+          } else {
+            return false;
           }
         });
         this.setState({
@@ -94,7 +104,7 @@ class App extends Component {
   }
   createPlaylist() {
     const storage = window.localStorage;
-    const accessToken = storage.getItem('access_token');
+    const accessToken = storage.getItem("access_token");
     const slug = "https://api.spotify.com/v1/";
 
     for (let i = 0; i < this.state.selected.length; i++) {
@@ -138,7 +148,7 @@ class App extends Component {
   }
   getTracks(uid, oldId, newPlaylistId, tracks) {
     const storage = window.localStorage;
-    const accessToken = storage.getItem('access_token');
+    const accessToken = storage.getItem("access_token");
     const slug = "https://api.spotify.com/v1/";
 
     const url = `${slug}users/spotify/playlists/${oldId}/tracks`;
@@ -185,18 +195,18 @@ class App extends Component {
     // Move fill into here
   }
   removeUrlParameter(url, parameter) {
-    var urlParts = url.split('?');
-  
+    var urlParts = url.split("?");
+
     if (urlParts.length >= 2) {
       // Get first part, and remove from array
       var urlBase = urlParts.shift();
-  
+
       // Join it back up
-      var queryString = urlParts.join('?');
-  
-      var prefix = encodeURIComponent(parameter) + '=';
+      var queryString = urlParts.join("?");
+
+      var prefix = encodeURIComponent(parameter) + "=";
       var parts = queryString.split(/[&;]/g);
-  
+
       // Reverse iteration as may be destructive
       for (var i = parts.length; i-- > 0; ) {
         // Idiom for string.startsWith
@@ -204,114 +214,140 @@ class App extends Component {
           parts.splice(i, 1);
         }
       }
-  
-      url = urlBase + '?' + parts.join('&');
+
+      url = urlBase + "?" + parts.join("&");
     }
-  
+
     return url;
   }
   componentWillMount() {
     let query = queryString.parse(window.location.search);
     const accessToken = query.access_token;
     let storage = window.localStorage;
-    if (storage.getItem('access_token') === 'undefined') {
-      storage.setItem('access_token', accessToken);
+    if (storage.getItem("access_token") === "undefined") {
+      storage.setItem("access_token", accessToken);
     }
   }
   componentDidMount() {
-    let query = queryString.parse(window.location.search);
-    let cleanURL = this.removeUrlParameter(window.location.href, 'access_token');
+    let cleanURL = this.removeUrlParameter(
+      window.location.href,
+      "access_token"
+    );
     // window.location.href = cleanURL;
-    window.history.replaceState({data: ''}, 'Save Discover', cleanURL);
+    window.history.replaceState({ data: "" }, "Save Discover", cleanURL);
     this.fetchData();
   }
   render() {
     return (
-      <div className="App">
-        {this.state.loggedIn ? (
-          <div>
-            {/* Love you, React */}
-            <Title
-              username={this.state.user && this.state.user.name}
-              profile_picture={this.state.user.profile_picture}
-            />
-            {this.state.saved ? (
-             <div className="result">
-                <h2 className="result__title">Save Complete!</h2>
-                <p className="result__text">
-                  Your playlist(s) have been generated and saved to your account.
-                  They are saved in the following format:<br /> <strong>SAVED Discover Weekly (or Release Radar) on $todays_date</strong>
-                </p>
-             </div> 
-            ):(
+      <CSSTransitionGroup
+        transitionName="App"
+        transitionAppear={true}
+        transitionAppearTimeout={600}
+        transitionEnter={false}
+        transitionLeave={true}
+        transitionLeaveTimeout={600}
+      >
+        <div className="App">
+          {this.state.loggedIn ? (
             <div>
-              <div className="playlists">
-              {this.state.playlists.map(playlist => (
-                <Playlist
-                  onSelect={(name, action) => {
-                    const selected = [...this.state.selected];
-
-                    if (action === "select") {
-                      selected.push(name);
-                      this.setState({
-                        selected
-                      });
-                    } else if (action === "deselect") {
-                      let newSelected = selected.filter(item => {
-                        if (item !== name) {
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      });
-                      this.setState({
-                        selected: newSelected
-                      });
-                    }
-                    // Filter by name
-                    // let selected = this.state.playlists.filter(playlist => playlist.name === name);
-                  }}
-                  key={playlist.name}
-                  playlist={playlist}
-                  image={playlist.images[0].url}
-                />
-              ))}
-            </div>
-
-            <div className="create">
-              {this.state.selected.length ? (
-                <div>
-                  <button
-                    onClick={() => this.createPlaylist()}
-                    className="button button--create"
-                  >
-                    Save Selected
-                  </button>
-                </div>
+              {/* Love you, React */}
+              <Title
+                username={this.state.user && this.state.user.name}
+                profile_picture={this.state.user.profile_picture}
+              />
+              {this.state.saved ? (
+                <CSSTransitionGroup
+                  transitionName="result-wrapper"
+                  transitionAppear={true}
+                  transitionAppearTimeout={100}
+                >
+                  <div className="result">
+                    <h2 className="result__title">Save Complete!</h2>
+                    <p className="result__text">
+                      Your playlist(s) have been generated and saved to your
+                      account. They are saved in the following format:<br />{" "}
+                      <strong>
+                        SAVED Discover Weekly (or Release Radar) on $todays_date
+                      </strong>
+                    </p>
+                  </div>
+                </CSSTransitionGroup>
               ) : (
-                <div />
+                <div>
+                  <div className="playlists">
+                    {this.state.playlists.map(playlist => (
+                      <Playlist
+                        onSelect={(name, action) => {
+                          const selected = [...this.state.selected];
+
+                          if (action === "select") {
+                            selected.push(name);
+                            this.setState({
+                              selected
+                            });
+                          } else if (action === "deselect") {
+                            let newSelected = selected.filter(item => {
+                              if (item !== name) {
+                                return true;
+                              } else {
+                                return false;
+                              }
+                            });
+                            this.setState({
+                              selected: newSelected
+                            });
+                          }
+                          // Filter by name
+                          // let selected = this.state.playlists.filter(playlist => playlist.name === name);
+                        }}
+                        key={playlist.name}
+                        playlist={playlist}
+                        image={playlist.images[0].url}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="create">
+                    {this.state.selected.length ? (
+                      <div>
+                        <button
+                          onClick={() => this.createPlaylist()}
+                          className="button button--create"
+                        >
+                          Save Selected
+                        </button>
+                      </div>
+                    ) : (
+                      <div />
+                    )}
+                  </div>
+                </div>
               )}
             </div>
+          ) : (
+            <div className="log-in-wrapper">
+              <CSSTransitionGroup
+                transitionName="log-in"
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={600}
+              >
+                <button
+                  onClick={() => {
+                    if (window.location.href.includes("localhost")) {
+                      window.location = `http://localhost:8888/login`;
+                    } else {
+                      window.location = `https://save-discover-backend.herokuapp.com/login`;
+                    }
+                  }}
+                  className="button"
+                >
+                  Click Here to Sign In
+                </button>
+              </CSSTransitionGroup>
             </div>
-            )}
-          </div>
-        ) : (
-          <div className="log-in-wrapper">
-            <button
-              onClick={() => {
-                if (window.location.href.includes("localhost")) {
-                  window.location = `http://localhost:8888/login`;
-                } else {
-                  window.location = `https://save-discover-backend.herokuapp.com/login`;
-                }
-              }}
-              className="button"
-            >
-              Click Here to Sign In
-            </button>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </CSSTransitionGroup>
     );
   }
 }

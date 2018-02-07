@@ -23,6 +23,25 @@
   width: 100%;
   height: 100vh;
   align-items: center;
+  text-align: center;
+}
+
+.log-in__image-wrap {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.log-in__image {
+  position: absolute;
+  width: auto;
+  height: 100%;
+  top: 0%;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .log-in-wrapper span {
@@ -67,7 +86,7 @@
 /* Animations */
 .App-appear {
   transform: translateY(50%);
-  opacity: 0.2;
+  opacity: 0;
 }
 
 .App-appear-active {

@@ -20,19 +20,7 @@ class App extends Component {
       saved: false
     };
   }
-  handleErrors(response) {
-    const _this = this;
-    if (!response.ok) {
-      console.log(response);
-      if (response.status === 401) {
-        let storage = window.localStorage;
-        storage.setItem("access_token", "undefined");
-        _this.fetchData();
-      }
-      throw Error(response.error);
-    }
-    return response;
-  }
+
   fetchData() {
     const storage = window.localStorage;
     const accessToken = storage.getItem("access_token");
@@ -74,11 +62,15 @@ class App extends Component {
         Authorization: `Bearer ${accessToken}`
       }
     })
-      .then(this.handleErrors)
+      // .then(this.handleErrors(this))
       .then(response => {
         return response.json();
       })
       .then(data => {
+        if (data.error && data.error.status === 401) {
+          this.handleErrors(this);
+          return;
+        }
         const playlists = data.items;
         // Look for discover & release
         let noNullPlaylists = playlists.filter(
@@ -237,6 +229,13 @@ class App extends Component {
     window.history.replaceState({ data: "" }, "Save Discover", cleanURL);
     this.fetchData();
   }
+  handleErrors(ctx) {
+    let storage = window.localStorage;
+    storage.setItem("access_token", "undefined");
+    ctx.setState({
+      loggedIn: false
+    });
+  }
   render() {
     return (
       <CSSTransitionGroup
@@ -331,6 +330,15 @@ class App extends Component {
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={600}
               >
+                <div class="log-in__image-wrap">
+                  <img
+                    src="./images/save-playlists.JPG"
+                    className="log-in__image"
+                    alt="Save Playlists"
+                  />
+                </div>
+                <h1>Save Playlists</h1>
+                <p>Please log in to continue.</p>
                 <button
                   onClick={() => {
                     if (window.location.href.includes("localhost")) {

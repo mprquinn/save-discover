@@ -21,7 +21,6 @@ class App extends Component {
       saved: false
     };
   }
-
   fetchData() {
     const storage = window.localStorage;
     const accessToken = storage.getItem("access_token");
@@ -123,7 +122,8 @@ class App extends Component {
       // Manually create the json here since the spotify one has the wrong user info
       let newPlaylist = {
         collaborative: false,
-        name: `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} ${currentPlaylist} - Autosaved`,
+        name: `${date.getMonth() +
+          1}/${date.getDate()}/${date.getFullYear()} ${currentPlaylist} - Autosaved`,
         public: false,
         description: "Auto generated playlist"
       };

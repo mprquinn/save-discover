@@ -15,6 +15,8 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "mo-js": "^0.288.2",
+    "mojs": "^0.2.0",
     "query-string": "^5.1.0"
   }
 }
